@@ -1,0 +1,56 @@
+/* App.css — Estilos del contenedor principal del frontend */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Encabezado simple */
+.app-header {
+  padding: 1.5rem 2rem;
+  background: #ffffff;
+  border-bottom: 1px solid #d1d5db;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0c5852; /* teal corporativo */
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* Contenedor del botón (a la derecha) */
+.app-actions {
+  margin-left: auto;
+}
+
+/* Área principal */
+/* Centramos el contenido y permitimos scroll horizontal si la A4 es muy ancha */
+.app-main {
+  flex: 1;
+  padding: 1.5rem 0 2rem;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+/* Placeholder temporal mientras migramos la UI del cotizador */
+.app-placeholder {
+  padding: 1.25rem 1.5rem;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #4b5563;
+  font-size: 0.95rem;
+}

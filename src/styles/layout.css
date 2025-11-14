@@ -1,0 +1,94 @@
+/* layout.css — Página A4 en pantalla */
+
+/* Tamaños A4 */
+:root {
+  --a4w: 210mm;
+  --a4h: 297mm;
+  --page-bg: #ffffff;
+}
+
+/* Contenedor que centra la página y permite scroll horizontal si es necesario */
+.page-shell {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 1rem 2rem;
+}
+
+/* Base de la página */
+.page {
+  background: var(--page-bg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Vertical (A4 portrait) */
+.page-portrait {
+  width: var(--a4w);
+  min-height: var(--a4h);
+}
+
+/* Horizontal (A4 landscape) */
+.page-landscape {
+  width: var(--a4h);
+  min-height: var(--a4w);
+}
+
+/* Relleno interno */
+.page-pad {
+  padding: 14mm;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+/* Placeholder mientras está en blanco */
+.blank-placeholder {
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 1.5rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+  background: #f9fafb;
+}
+
+/* Botón de orientación */
+.btn-orientation {
+  border: 1px solid #0c5852;
+  background: #0c5852;
+  color: #ffffff;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+}
+
+.btn-orientation:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 4px 10px rgba(12, 88, 82, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Ajuste responsivo: hacer zoom-out en pantallas medianas/pequeñas */
+@media (max-width: 1200px) {
+  .page {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    transform: scale(0.7);
+  }
+}

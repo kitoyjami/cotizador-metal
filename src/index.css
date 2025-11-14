@@ -1,0 +1,31 @@
+/* index.css — Estilos globales */
+
+/* Importamos el layout de la página A4 */
+@import './styles/layout.css';
+
+/* Reset suave */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fuente global y fondo base */
+html,
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  background: #e9eef2;
+  color: #1f2937;
+  min-height: 100vh;
+}
+
+/* Enlaces */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
