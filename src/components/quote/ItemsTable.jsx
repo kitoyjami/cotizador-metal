@@ -1,10 +1,11 @@
 // src/components/quote/ItemsTable.jsx
 import ItemsTableRow from './ItemsTableRow.jsx';
 
-function ItemsTable({ items, onItemChange, currency }) {
+function ItemsTable({ items, onItemChange, currency, itemOffset = 0, title }) {
   return (
     <section className="table-wrap">
-      <h3 className="table-title">Detalle económico</h3>
+      {/* Permite que desde fuera puedas cambiar el título si quieres (cont.) */}
+      <h3 className="table-title">{title || 'Detalle económico'}</h3>
       <table className="items">
         <colgroup>
           <col className="w-item" />
@@ -28,7 +29,7 @@ function ItemsTable({ items, onItemChange, currency }) {
           {items.map((it, idx) => (
             <ItemsTableRow
               key={it.id}
-              index={idx + 1}
+              index={itemOffset + idx + 1}   // numeración continua
               item={it}
               currency={currency}
               onChange={onItemChange}

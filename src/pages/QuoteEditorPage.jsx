@@ -1,16 +1,21 @@
 // src/pages/QuoteEditorPage.jsx
 import { useState } from 'react';
+import FabStack from '../components/layout/FabStack.jsx';
 import BrandBlock from '../components/quote/BrandBlock.jsx';
 import QuoteHeader from '../components/quote/QuoteHeader.jsx';
 import PartyCard from '../components/quote/PartyCard.jsx';
 import SummaryBlock from '../components/quote/SummaryBlock.jsx';
-import ItemsTable from '../components/quote/ItemsTable.jsx';
 import TotalsBox from '../components/quote/TotalsBox.jsx';
 import ConditionsBlock from '../components/quote/ConditionsBlock.jsx';
 import SignatureBlock from '../components/quote/SignatureBlock.jsx';
 
+// Paginador (interno se encarga de llamar a ItemsTable)
+import QuotePages from '../components/pagination/QuotePages.jsx';
+
 function QuoteEditorPage() {
-  // ===== Encabezado (N°, fecha, moneda, validez) =====
+  /* =======================================================
+     ENCABEZADO
+     ======================================================= */
   const [header, setHeader] = useState({
     number: 'COT-001-2025',
     date: new Date().toLocaleDateString('es-PE', {
@@ -23,10 +28,12 @@ function QuoteEditorPage() {
   });
 
   const handleHeaderChange = (field, value) => {
-    setHeader((prev) => ({ ...prev, [field]: value }));
+    setHeader(prev => ({ ...prev, [field]: value }));
   };
 
-  // ===== Cliente editable =====
+  /* =======================================================
+     CLIENTE
+     ======================================================= */
   const [client, setClient] = useState({
     name: 'GOBIERNO REGIONAL LA LIBERTAD – PROYECTO CHAVIMOCHIC',
     ruc: '20440374248',
@@ -34,15 +41,19 @@ function QuoteEditorPage() {
   });
 
   const handleClientChange = (field, value) => {
-    setClient((prev) => ({ ...prev, [field]: value }));
+    setClient(prev => ({ ...prev, [field]: value }));
   };
 
-  // ===== Resumen =====
+  /* =======================================================
+     RESUMEN
+     ======================================================= */
   const [summary, setSummary] = useState(
     'Suministro de planchas de acero inoxidable AISI 316 según ASTM A240/A240M. Incluye IGV y entrega en obra.'
   );
 
-  // ===== Condiciones comerciales (lista editable) =====
+  /* =======================================================
+     CONDICIONES COMERCIALES
+     ======================================================= */
   const [conditions, setConditions] = useState([
     'Plazo de entrega: 10 días calendario.',
     'Tipo de pago: Contado / Crédito a 10 días.',
@@ -51,7 +62,7 @@ function QuoteEditorPage() {
   ]);
 
   const handleConditionChange = (index, value) => {
-    setConditions((prev) => {
+    setConditions(prev => {
       const next = [...prev];
       next[index] = value;
       return next;
@@ -59,14 +70,16 @@ function QuoteEditorPage() {
   };
 
   const handleAddCondition = () => {
-    setConditions((prev) => [...prev, 'Nueva condición comercial']);
+    setConditions(prev => [...prev, 'Nueva condición comercial']);
   };
 
   const handleRemoveCondition = (index) => {
-    setConditions((prev) => prev.filter((_, i) => i !== index));
+    setConditions(prev => prev.filter((_, i) => i !== index));
   };
 
-  // ===== Datos "Proveedor" fijos =====
+  /* =======================================================
+     PROVEEDOR
+     ======================================================= */
   const supplierFields = [
     {
       id: 'razon',
@@ -95,7 +108,9 @@ function QuoteEditorPage() {
     },
   ];
 
-  // ===== Campos de cliente (PartyCard derecha) =====
+  /* =======================================================
+     CAMPOS CLIENTE
+     ======================================================= */
   const clientFields = [
     {
       id: 'name',
@@ -123,7 +138,9 @@ function QuoteEditorPage() {
     },
   ];
 
-  // ===== Items de la tabla =====
+  /* =======================================================
+     ÍTEMS
+     ======================================================= */
   const [items, setItems] = useState([
     {
       id: 1,
@@ -136,62 +153,110 @@ function QuoteEditorPage() {
   ]);
 
   const handleItemChange = (id, field, value) => {
-    setItems((prev) =>
-      prev.map((it) =>
-        it.id === id
-          ? {
-              ...it,
-              [field]: value,
-            }
-          : it
-      )
+    setItems(prev =>
+      prev.map(it => (it.id === id ? { ...it, [field]: value } : it))
     );
   };
 
-  // ===== Render =====
+  const handleAddRow = () => {
+    setItems(prev => {
+      const nextId = prev.length ? Math.max(...prev.map(it => it.id)) + 1 : 1;
+      return [
+        ...prev,
+        {
+          id: nextId,
+          description: '',
+          um: 'UND',
+          qty: '1',
+          unitPrice: '0.00',
+        },
+      ];
+    });
+  };
+
+  const handleDelRow = () => {
+    setItems(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
+  };
+
+  const handleClearAll = () => {
+    setItems([
+      {
+        id: 1,
+        description: '',
+        um: 'UND',
+        qty: '1',
+        unitPrice: '0.00',
+      },
+    ]);
+  };
+
+  /* =======================================================
+     IMPRESIÓN
+     ======================================================= */
+  const handlePrint = () => {
+    window.print();
+  };
+
+  /* =======================================================
+     RENDER
+     ======================================================= */
   return (
-    <div className="quote-page">
-      <header className="head">
-        <BrandBlock />
-        <QuoteHeader header={header} onChange={handleHeaderChange} />
-      </header>
-
-      <div className="bar" />
-
-      {/* Proveedor / Cliente */}
-      <section className="grid-2">
-        <PartyCard title="Proveedor" fields={supplierFields} />
-        <PartyCard
-          title="Cliente"
-          fields={clientFields}
-          onFieldChange={handleClientChange}
-        />
-      </section>
-
-      {/* Resumen */}
-      <SummaryBlock value={summary} onChange={setSummary} />
-
-      {/* Tabla de ítems */}
-      <ItemsTable
-        items={items}
-        onItemChange={handleItemChange}
-        currency={header.currency}
+    <>
+      {/* FAB flotantes (no afectan layout A4) */}
+      <FabStack
+        onPrint={handlePrint}
+        onAddRow={handleAddRow}
+        onDelRow={handleDelRow}
+        onClearAll={handleClearAll}
       />
 
-      {/* Totales */}
-      <TotalsBox items={items} currency={header.currency} />
+      {/* Contenedor general: mantiene .quote-page para tus selectores */}
+      <div className="quote-page">
+        <QuotePages
+          items={items}
+          onItemChange={handleItemChange}
+          currency={header.currency}
+          /* Slot: contenido que va SOLO en la primera página */
+          headerSlot={
+            <>
+              <header className="head">
+                <BrandBlock />
+                <QuoteHeader header={header} onChange={handleHeaderChange} />
+              </header>
 
-      {/* Condiciones + Firma en la franja inferior */}
-      <section className="conditions-sign-section">
-        <ConditionsBlock
-          conditions={conditions}
-          onConditionChange={handleConditionChange}
-          onAddCondition={handleAddCondition}
-          onRemoveCondition={handleRemoveCondition}
+              <div className="bar" />
+
+              {/* Proveedor / Cliente */}
+              <section className="grid-2">
+                <PartyCard title="Proveedor" fields={supplierFields} />
+                <PartyCard
+                  title="Cliente"
+                  fields={clientFields}
+                  onFieldChange={handleClientChange}
+                />
+              </section>
+
+              {/* Resumen */}
+              <SummaryBlock value={summary} onChange={setSummary} />
+            </>
+          }
+          /* Totales: solo en la ÚLTIMA página */
+          totalsSlot={<TotalsBox items={items} currency={header.currency} />}
+          /* Condiciones + Firma: solo en la ÚLTIMA página */
+          footerSlot={
+            <section className="conditions-sign-section">
+              <ConditionsBlock
+                conditions={conditions}
+                onConditionChange={handleConditionChange}
+                onAddCondition={handleAddCondition}
+                onRemoveCondition={handleRemoveCondition}
+              />
+              <SignatureBlock />
+            </section>
+          }
         />
-        <SignatureBlock />
-      </section>
-    </div>
+      </div>
+    </>
   );
 }
 
