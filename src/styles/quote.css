@@ -1,0 +1,494 @@
+/* quote.css — estilos específicos del cotizador */
+
+/* ================== Cabecera general ================== */
+.head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  align-items: flex-start;
+}
+
+/* Bloque de marca */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.logo {
+  height: 18mm;
+  width: auto;
+  object-fit: contain;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 19px;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.title p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+}
+
+.title a {
+  color: #0b3f3b;
+  text-decoration: none;
+}
+
+.title a:hover {
+  text-decoration: underline;
+}
+
+/* ================== Inputs genéricos tipo "label" ================== */
+.quote-page input.line,
+.quote-page select.line,
+.quote-page textarea.line {
+  width: 100%;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0;
+  font-size: 12px;
+  font-family: inherit;   /* Inter */
+  background: transparent;
+  border-radius: 0;
+  height: auto;
+  color: #0f172a;
+  appearance: none;
+}
+
+/* Textareas sin scroll visible, auto-ajustables */
+.quote-page textarea.line {
+  resize: none;
+  min-height: 2.4em;
+  overflow: hidden;
+  line-height: 1.35;
+  word-wrap: break-word;
+}
+
+.quote-page input.line:focus,
+.quote-page select.line:focus,
+.quote-page textarea.line:focus {
+  outline: none !important;
+}
+
+/* ================== Cuadro de cotización ================== */
+.quote-box {
+  border: 1px solid rgba(12, 88, 82, 0.2);
+  border-radius: 8px;
+  padding: 5mm 6mm;
+  min-width: 0;
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 80mm;
+  justify-self: end;
+}
+
+.q-title {
+  font-weight: 800;
+  color: var(--teal);
+  font-size: 15px;
+  margin: 1mm 0 3mm;
+  text-align: right;
+}
+
+.q-grid {
+  display: grid;
+  grid-template-columns: 26mm 1fr;
+  gap: 3px;
+  font-size: 12px;
+}
+
+.lbl {
+  color: #0b3f3b;
+  font-weight: 800;
+}
+
+/* ================== Grid 2 columnas (Proveedor/Cliente, etc.) ================== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  align-items: stretch; /* mismas alturas */
+}
+
+/* ================== Tarjetas genéricas ================== */
+.card {
+  background: #ffffff;
+  border: 1px solid rgba(28, 31, 35, 0.12);
+  border-radius: 8px;
+  padding: 5mm;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h3 {
+  margin: 0 0 4mm;
+  font-size: 15.5px;
+  color: #122024;
+}
+
+/* ================== PartyCard: Proveedor / Cliente ================== */
+.dl {
+  display: grid;
+  grid-template-columns: 20mm 1fr;
+  gap: 2mm 6mm;
+  font-size: 12.5px;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.dl dt {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dl dd {
+  margin: 0;
+  width: 100%;
+}
+
+.dl dd .line,
+.dl dd span {
+  width: 100%;
+  display: inline-block;
+}
+
+/* ================== Placeholder temporal ================== */
+.quote-body-placeholder {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+  background: #f9fafb;
+}
+
+/* ================== Barra separadora ================== */
+.bar {
+  margin: 12px 0 14px;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(12, 88, 82, 0.15),
+    rgba(12, 88, 82, 0.04) 60%,
+    transparent
+  );
+  border-radius: 999px;
+}
+
+/* ================== Resumen ================== */
+.summary-card {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 6mm;
+}
+
+.summary-card h3 {
+  margin-bottom: 3mm;
+}
+
+.summary-card textarea.line {
+  font-size: 12.5px;
+}
+
+/* ================== Tabla de ítems ================== */
+.table-wrap {
+  margin-top: 6mm;
+}
+
+.table-title {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--teal);
+  margin: 0 0 4mm;
+}
+
+table.items {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12.5px;
+  table-layout: fixed;
+}
+
+.items col.w-item { width: 12mm; }
+.items col.w-um   { width: 18mm; }
+.items col.w-cant { width: 18mm; }
+.items col.w-pu   { width: 30mm; }
+.items col.w-sub  { width: 34mm; }
+
+.items thead th {
+  background: #0c5852;
+  color: #ffffff;
+  text-align: center;
+  padding: 8px 6px;
+  font-weight: 800;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-right: none;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+/* Descripción alineada a la izquierda */
+.items thead th:nth-child(2) {
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* Esquinas superiores ligeramente redondeadas */
+.items thead th:first-child {
+  border-top-left-radius: 4px;
+}
+.items thead th:last-child {
+  border-top-right-radius: 4px;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.items tbody td {
+  background: #ffffff;
+  padding: 6px;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+.items tbody tr:nth-child(even) td {
+  background: var(--row);
+}
+
+/* Inputs dentro de la tabla */
+.items td .line {
+  width: 100%;
+  display: block;
+}
+
+/* Descripción más cómoda de leer */
+.items td .desc {
+  font-size: 12.5px;
+  text-align: justify;
+  line-height: 1.35;
+}
+
+.quote-page input.num {
+  text-align: right;
+}
+
+/* utilidades de alineación */
+.ta-r { text-align: right; }
+.ta-c { text-align: center; }
+
+/* ===== Totales debajo de la tabla ===== */
+.totals-box {
+  margin-top: 6mm;
+  margin-left: auto;
+  width: 80mm;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  font-size: 12.5px;
+}
+
+.totals-row {
+  display: grid;
+  grid-template-columns: 1fr 40mm;
+  align-items: center;
+}
+
+.totals-row + .totals-row {
+  border-top: 1px solid #e5e7eb;
+}
+
+.totals-label {
+  padding: 6px 10px;
+  font-weight: 600;
+  background: #fbfbfb;
+  color: #111827;
+}
+
+.totals-value {
+  padding: 6px 10px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.totals-row-grand .totals-label,
+.totals-row-grand .totals-value {
+  background: #e8e2d5;
+  font-weight: 800;
+}
+
+/* ===== Condiciones comerciales + Firma (layout simple) ===== */
+/* Condiciones más anchas, firma fija */
+.conditions-sign-section {
+  margin-top: 6mm;
+  display: grid;
+  grid-template-columns: 6fr 1fr;  /* ⬅️ izquierda ~75%, derecha ~25% */
+  gap: 6mm;
+}
+
+
+
+
+/* Bloque de condiciones: sin card, solo texto */
+/* Bloque de condiciones más ancho sin espacios inútiles */
+.conditions-block {
+  border: none;
+  box-shadow: none;
+  padding: 0 2mm;      /* 🔹 antes era 0 — ahora se usa más área */
+  background: transparent;
+}
+
+
+.conditions-title {
+  margin: 0 0 3mm;
+  font-size: 15px;
+  color: #122024;
+}
+
+/* --- lista editable de condiciones --- */
+.conditions-list {
+  list-style: none;            /* quitamos bullets nativos */
+  padding-left: 0;
+  margin: 0 0 3mm;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.conditions-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+  margin-bottom: 2mm;
+  position: relative;
+}
+
+/* bullet visual personalizado */
+.conditions-item::before {
+  content: "•";
+  font-size: 13px;
+  line-height: 1.4;
+  color: #111827;
+  margin-top: 3px;
+}
+
+/* textarea de cada condición */
+.conditions-item .cond-textarea {
+  flex: 1;
+  padding: 0 !important;
+  min-height: 1.8em;
+  line-height: 1.35;
+  resize: none;          /* sin manija */
+  overflow: hidden;      /* sin scroll, crece hacia abajo */
+  white-space: pre-wrap; /* respeta saltos manuales y envuelve texto */
+  word-wrap: break-word;
+}
+
+/* botón eliminar condición */
+.cond-del-btn {
+  border: 1px solid #fca5a5;
+  background: #fee2e2;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #b91c1c;
+}
+
+.cond-del-btn:hover {
+  background: #fecaca;
+}
+
+/* botón para añadir más condiciones (solo en pantalla) */
+.conditions-add-btn {
+  margin-top: 2mm;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid #9cd1c9;
+  background: #e6f4f3;
+  color: var(--teal);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.conditions-add-btn:hover {
+  background: #d3ecea;
+}
+
+/* ===== Firma simple y limpia ===== */
+.signature-block {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  background: transparent;
+  font-size: 12.5px;
+}
+
+.signature-by {
+  margin: 0 0 2mm;
+  color: #4b5563;
+}
+
+.signature-company {
+  margin: 0;
+  font-weight: 700;
+}
+
+.signature-ruc {
+  margin: 0 0 6mm;
+  font-size: 12px;
+  color: #475569;
+}
+
+/* Área de firma */
+.signature-area {
+  width: 100%;
+  min-height: 26mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* Firma: se coloca ligeramente sobre la línea */
+.signature-img {
+  max-height: 20mm;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: -3mm; /* hace que "se siente" sobre la línea */
+}
+
+/* Línea de firma */
+.signature-line {
+  width: 58mm;
+  height: 0.7px;
+  background: #475569;
+  margin-top: 6mm;
+}
+
+/* Texto bajo la línea */
+.signature-label {
+  margin-top: 2mm;
+  font-size: 12px;
+  color: #334155;
+}
+
+/* Ajuste responsive */
+@media (max-width: 900px) {
+  .conditions-sign-section {
+    grid-template-columns: 1fr;
+    gap: 4mm;
+  }
+}

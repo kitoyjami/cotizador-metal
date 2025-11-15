@@ -8,13 +8,34 @@
 
 /* Encabezado simple */
 .app-header {
-  padding: 1.5rem 2rem;
+  padding: 1.1rem 2rem;
   background: #ffffff;
   border-bottom: 1px solid #d1d5db;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1.5rem;
+
+  /* 🔹 Fijar el header al hacer scroll */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Pequeño efecto de fondo para separarlo de las páginas */
+.app-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(148, 163, 184, 0.7),
+    transparent
+  );
+  pointer-events: none;
 }
 
 .app-header h1 {
@@ -35,14 +56,14 @@
   margin-left: auto;
 }
 
-/* Área principal */
-/* Centramos el contenido y permitimos scroll horizontal si la A4 es muy ancha */
+/* Área principal: centramos las páginas A4 y permitimos scroll vertical */
 .app-main {
   flex: 1;
-  padding: 1.5rem 0 2rem;
+  padding: 1.25rem 0 2rem;
   display: flex;
   justify-content: center;
-  overflow-x: auto;
+  overflow-x: auto;   /* solo scroll horizontal si hace falta */
+  /* el scroll vertical lo maneja el body */
 }
 
 /* Placeholder temporal mientras migramos la UI del cotizador */
