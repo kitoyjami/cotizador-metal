@@ -48,13 +48,13 @@
 /* Vertical (A4 portrait) */
 .page-portrait {
   width: var(--a4w);
-  min-height: var(--a4h);
+  height: var(--a4h);
 }
 
 /* Horizontal (A4 landscape) */
 .page-landscape {
   width: var(--a4h);
-  min-height: var(--a4w);
+  height: var(--a4w);
 }
 
 /* Relleno interno */
