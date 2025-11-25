@@ -25,6 +25,16 @@
   width: 100%;
 }
 
+/* Página fantasma para medir alturas reales sin afectar el layout */
+.page-shell-measure {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+
 /* Base de la página */
 .page {
   background: var(--page-bg);

@@ -1,4 +1,5 @@
 // src/components/pagination/QuotePages.jsx
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import ItemsTable from '../quote/ItemsTable.jsx';
 
 /**
@@ -22,41 +23,146 @@ function QuotePages({
   totalsSlot,  // TotalsBox
   footerSlot,  // condiciones + firma
 }) {
-  // ===== Parámetros de paginación (ajustables) =====
-  // Primera página tiene menos espacio útil (encabezado + resumen)
-  const PAGINATION_CONFIG = {
-    portrait: { first: 10, other: 18 },
-    landscape: { first: 14, other: 24 },
-  };
+  const measureRef = useRef(null);
+  const [metrics, setMetrics] = useState(null);
 
-  const { first: ROWS_FIRST_PAGE, other: ROWS_OTHER_PAGES } =
-    PAGINATION_CONFIG[orientation] || PAGINATION_CONFIG.portrait;
+  // Mide alturas reales de cada sección para paginar por altura total de la hoja
+  useLayoutEffect(() => {
+    const node = measureRef.current;
+    if (!node) return;
 
-  // ===== Particionamos items en páginas =====
-  const pages = [];
-  let index = 0;
-  let offset = 0; // para numeración continua (Ítem 1, 2, 3, ...)
+    const pad = node.querySelector('[data-measure="pad"]');
+    const header = node.querySelector('[data-measure="header"]');
+    const totals = node.querySelector('[data-measure="totals"]');
+    const footer = node.querySelector('[data-measure="footer"]');
+    const tableWrap = node.querySelector('[data-measure="tablewrap"]');
+    const rows = tableWrap?.querySelectorAll('tbody tr');
 
-  while (index < items.length) {
-    const capacity = pages.length === 0 ? ROWS_FIRST_PAGE : ROWS_OTHER_PAGES;
-    const slice = items.slice(index, index + capacity);
+    if (!pad || !tableWrap || !rows) return;
 
-    pages.push({
-      items: slice,
-      offset, // cuántos ítems hay antes de esta página
+    const padHeight = pad.getBoundingClientRect().height;
+    const headerHeight = header?.getBoundingClientRect().height || 0;
+    const totalsHeight = totals?.getBoundingClientRect().height || 0;
+    const footerHeight = footer?.getBoundingClientRect().height || 0;
+
+    const rowHeights = Array.from(rows).map((row) =>
+      row.getBoundingClientRect().height,
+    );
+
+    const rowsTotalHeight = rowHeights.reduce((acc, h) => acc + h, 0);
+    const tableWrapHeight = tableWrap.getBoundingClientRect().height;
+    // Todo lo que no sean filas (título, thead, márgenes) se cuenta como altura fija
+    const tableFixedHeight = Math.max(tableWrapHeight - rowsTotalHeight, 0);
+
+    setMetrics({
+      padHeight,
+      headerHeight,
+      totalsHeight,
+      footerHeight,
+      tableFixedHeight,
+      rowHeights,
     });
+  }, [items, orientation, headerSlot, totalsSlot, footerSlot]);
 
-    index += capacity;
-    offset += slice.length;
-  }
+  const pages = useMemo(() => {
+    if (!metrics) return [{ items, offset: 0 }];
+    const {
+      padHeight,
+      headerHeight,
+      totalsHeight,
+      footerHeight,
+      tableFixedHeight,
+      rowHeights,
+    } = metrics;
 
-  // Si no hay items, aseguramos una página vacía
-  if (pages.length === 0) {
-    pages.push({ items: [], offset: 0 });
-  }
+    const result = [];
+    let cursor = 0;
+    let offset = 0;
+
+    while (cursor < rowHeights.length) {
+      const isFirst = result.length === 0;
+      const rowsLeft = rowHeights.length - cursor;
+      let available = padHeight;
+
+      if (isFirst) {
+        available -= headerHeight;
+      }
+
+      // Altura fija de la tabla por página (título, thead, márgenes)
+      available -= tableFixedHeight;
+
+      const rowsForPage = [];
+
+      for (let i = 0; i < rowsLeft; i += 1) {
+        const rowHeight = rowHeights[cursor + i];
+        const isLastRow = cursor + i + 1 === rowHeights.length;
+        const required =
+          rowHeight + (isLastRow ? totalsHeight + footerHeight : 0);
+
+        if (required <= available) {
+          rowsForPage.push(cursor + i);
+          available -= rowHeight;
+        } else {
+          break;
+        }
+      }
+
+      // Si por reserva de totales/footers no cupo ninguno, forzamos 1 fila
+      if (rowsForPage.length === 0) {
+        rowsForPage.push(cursor);
+        cursor += 1;
+      } else {
+        cursor = rowsForPage[rowsForPage.length - 1] + 1;
+      }
+
+      const slice = items.slice(
+        rowsForPage[0],
+        rowsForPage[rowsForPage.length - 1] + 1,
+      );
+
+      result.push({
+        items: slice,
+        offset,
+      });
+
+      offset += slice.length;
+    }
+
+    if (result.length === 0) {
+      result.push({ items: [], offset: 0 });
+    }
+
+    return result;
+  }, [items, metrics]);
 
   return (
     <div id="pages" className={`pages-shell pages-${orientation}`}>
+      {/* Medidor oculto para calcular alturas reales */}
+      <div className="page-shell page-shell-measure" aria-hidden>
+        <section className={`page page-${orientation}`}>
+          <div className="page-pad" data-measure="pad" ref={measureRef}>
+            {headerSlot && <div data-measure="header">{headerSlot}</div>}
+
+            <div data-measure="tablewrap">
+              <ItemsTable
+                items={items}
+                onItemChange={() => {}}
+                currency={currency}
+                itemOffset={0}
+                title="Detalle económico"
+              />
+            </div>
+
+            {(totalsSlot || footerSlot) && (
+              <div data-measure="totals-footer">
+                {totalsSlot && <div data-measure="totals">{totalsSlot}</div>}
+                {footerSlot && <div data-measure="footer">{footerSlot}</div>}
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+
       {pages.map((page, pageIndex) => {
         const isFirst = pageIndex === 0;
         const isLast = pageIndex === pages.length - 1;
