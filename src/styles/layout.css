@@ -7,12 +7,22 @@
   --page-bg: #ffffff;
 }
 
+/* Contenedor general de todas las páginas */
+.pages-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 1rem 1rem 2rem;
+  box-sizing: border-box;
+}
+
 /* Contenedor que centra la página y permite scroll horizontal si es necesario */
 .page-shell {
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 1rem 1rem 2rem;
 }
 
 /* Base de la página */
@@ -153,5 +163,55 @@
 @media print {
   .fab-stack {
     display: none !important;
+  }
+}
+
+/* ===== Ajustes de impresión ===== */
+@page portrait {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+@page landscape {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+.page-portrait {
+  page: portrait;
+}
+
+.page-landscape {
+  page: landscape;
+}
+
+@media print {
+  body {
+    margin: 0;
+    background: #ffffff;
+  }
+
+  .app-header,
+  .fab-stack {
+    display: none !important;
+  }
+
+  .app-main {
+    padding: 0;
+  }
+
+  .pages-shell {
+    padding: 0;
+    gap: 0;
+  }
+
+  .page {
+    box-shadow: none;
+    margin: 0 auto;
+    page-break-after: always;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
   }
 }

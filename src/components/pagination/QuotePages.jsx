@@ -17,14 +17,20 @@ function QuotePages({
   items,
   onItemChange,
   currency,
+  orientation = 'portrait',
   headerSlot,  // contenido solo primera página
   totalsSlot,  // TotalsBox
   footerSlot,  // condiciones + firma
 }) {
   // ===== Parámetros de paginación (ajustables) =====
   // Primera página tiene menos espacio útil (encabezado + resumen)
-  const ROWS_FIRST_PAGE = 10;
-  const ROWS_OTHER_PAGES = 18;
+  const PAGINATION_CONFIG = {
+    portrait: { first: 10, other: 18 },
+    landscape: { first: 14, other: 24 },
+  };
+
+  const { first: ROWS_FIRST_PAGE, other: ROWS_OTHER_PAGES } =
+    PAGINATION_CONFIG[orientation] || PAGINATION_CONFIG.portrait;
 
   // ===== Particionamos items en páginas =====
   const pages = [];
@@ -50,31 +56,33 @@ function QuotePages({
   }
 
   return (
-    <div id="pages">
+    <div id="pages" className={`pages-shell pages-${orientation}`}>
       {pages.map((page, pageIndex) => {
         const isFirst = pageIndex === 0;
         const isLast = pageIndex === pages.length - 1;
 
         return (
-          <section className="page" key={pageIndex}>
-            <div className="page-pad">
-              {/* ===== Encabezado solo en la primera página ===== */}
-              {isFirst && headerSlot}
+          <div className="page-shell" key={pageIndex}>
+            <section className={`page page-${orientation}`}>
+              <div className="page-pad">
+                {/* ===== Encabezado solo en la primera página ===== */}
+                {isFirst && headerSlot}
 
-              {/* ===== Tabla de ítems (en todas las páginas) ===== */}
-              <ItemsTable
-                items={page.items}
-                onItemChange={onItemChange}
-                currency={currency}
-                itemOffset={page.offset}
-                title={isFirst ? 'Detalle económico' : 'Detalle económico (cont.)'}
-              />
+                {/* ===== Tabla de ítems (en todas las páginas) ===== */}
+                <ItemsTable
+                  items={page.items}
+                  onItemChange={onItemChange}
+                  currency={currency}
+                  itemOffset={page.offset}
+                  title={isFirst ? 'Detalle económico' : 'Detalle económico (cont.)'}
+                />
 
-              {/* ===== Totales + Condiciones + Firma solo en la última ===== */}
-              {isLast && totalsSlot}
-              {isLast && footerSlot}
-            </div>
-          </section>
+                {/* ===== Totales + Condiciones + Firma solo en la última ===== */}
+                {isLast && totalsSlot}
+                {isLast && footerSlot}
+              </div>
+            </section>
+          </div>
         );
       })}
     </div>

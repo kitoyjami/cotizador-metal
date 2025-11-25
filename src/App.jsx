@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import PageWrapper from './components/layout/PageWrapper.jsx';
 import OrientationToggle from './components/layout/OrientationToggle.jsx';
 import QuoteEditorPage from './pages/QuoteEditorPage.jsx';
 
@@ -29,9 +28,7 @@ function App() {
       </header>
 
       <main className="app-main">
-        <PageWrapper orientation={orientation}>
-          <QuoteEditorPage />
-        </PageWrapper>
+        <QuoteEditorPage orientation={orientation} />
       </main>
     </div>
   );

@@ -12,7 +12,7 @@ import SignatureBlock from '../components/quote/SignatureBlock.jsx';
 // Paginador (interno se encarga de llamar a ItemsTable)
 import QuotePages from '../components/pagination/QuotePages.jsx';
 
-function QuoteEditorPage() {
+function QuoteEditorPage({ orientation = 'portrait' }) {
   /* =======================================================
      ENCABEZADO
      ======================================================= */
@@ -216,6 +216,7 @@ function QuoteEditorPage() {
           items={items}
           onItemChange={handleItemChange}
           currency={header.currency}
+          orientation={orientation}
           /* Slot: contenido que va SOLO en la primera página */
           headerSlot={
             <>
