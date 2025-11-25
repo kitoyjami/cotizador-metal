@@ -40,7 +40,8 @@ function QuotePages({
 
     if (!pad || !tableWrap || !rows) return;
 
-    const padHeight = pad.getBoundingClientRect().height;
+    // Altura interna disponible de la hoja (ya resta márgenes/padding en CSS)
+    const padHeight = parseFloat(getComputedStyle(pad).height);
     const headerHeight = header?.getBoundingClientRect().height || 0;
     const totalsHeight = totals?.getBoundingClientRect().height || 0;
     const footerHeight = footer?.getBoundingClientRect().height || 0;
@@ -90,6 +91,7 @@ function QuotePages({
 
       // Altura fija de la tabla por página (título, thead, márgenes)
       available -= tableFixedHeight;
+      available = Math.max(available, 0);
 
       const rowsForPage = [];
 

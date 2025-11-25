@@ -5,6 +5,7 @@
   --a4w: 210mm;
   --a4h: 297mm;
   --page-bg: #ffffff;
+  --page-pad: 14mm;
 }
 
 /* Contenedor general de todas las páginas */
@@ -59,9 +60,17 @@
 
 /* Relleno interno */
 .page-pad {
-  padding: 14mm;
+  padding: var(--page-pad);
   box-sizing: border-box;
-  min-height: 100%;
+}
+
+/* Altura interna fija para que el paginador calcule el espacio real */
+.page-portrait .page-pad {
+  height: calc(var(--a4h) - (2 * var(--page-pad)));
+}
+
+.page-landscape .page-pad {
+  height: calc(var(--a4w) - (2 * var(--page-pad)));
 }
 
 /* Placeholder mientras está en blanco */
